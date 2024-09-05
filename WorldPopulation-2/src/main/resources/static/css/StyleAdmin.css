@@ -1,0 +1,75 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color:rgb(255, 128, 128);
+    margin: 0;
+    padding: 0;
+}
+.navbar{
+          background-color: #0e2433;
+        
+        }
+.navbar-brand{
+	color:#ffffff;
+}   
+.nav-link{
+	color:#ffffff;
+}     
+.container {
+    max-width: 50px;
+    margin-left: 50px auto;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h2 {
+    text-align: center;
+    color:#0e2433;
+}
+
+form {
+    width:100%;
+          padding:0.5rem;
+          font-size:1rem;
+          border:1px solid #ccc;
+          border-radius:4px;
+          box-sizing:border-box;;
+          background-color:#0e2433;
+        
+         
+}
+
+label {
+    font-weight: bold;
+    color:#ffffff;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    padding: 14px 20px;
+    margin: 20px 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+}
+
+input[type="submit"]:hover {
+    background-color: #45a049;
+}
+
+input[type="submit"]:active {
+    background-color: #3e8e41;
+}

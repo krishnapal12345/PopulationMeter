@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Block Number Details</title>
+</head>
+<body>
+    <h1>Block Number Details</h1>
+    <div th:if="${blockNumberDetails != null}">
+    <p th:text="'Block Number: ' + ${blockNumberDetails.blockNumber}"></p>
+    <p th:text="'Country Code: ' + ${blockNumberDetails.countrycode}"></p>
+    <p th:text="'State Code: ' + ${blockNumberDetails.statecode}"></p>
+    <p th:text="'Total Population: ' + ${blockNumberDetails.totalPopulation}"></p>
+    <p th:text="'Male Population: ' + ${blockNumberDetails.malePopulation}"></p>
+    <p th:text="'Female Population: ' + ${blockNumberDetails.femalePopulation}"></p>
+    <p th:text="'Total Educated: ' + ${blockNumberDetails.totalEducated}"></p>
+    <p th:text="'Male Educated: ' + ${blockNumberDetails.maleEducated}"></p>
+    <p th:text="'Female Educated: ' + ${blockNumberDetails.femaleEducated}"></p>
+    <p th:text="'Average Age: ' + ${blockNumberDetails.avgAge}"></p>
+    </div>
+    <div th:if="${blockNumberDetails == null}">
+        <p>Error: No data found for the given inputs.</p>
+    </div>
+</body>
+</html>
