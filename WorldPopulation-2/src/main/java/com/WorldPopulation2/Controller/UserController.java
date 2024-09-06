@@ -16,17 +16,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.WorldPopulation2.Dto.BlockDto;
+import com.WorldPopulation2.Dto.ContactDto;
 import com.WorldPopulation2.Dto.UserDto;
-import com.WorldPopulation2.Entity.BlockNumber;
-import com.WorldPopulation2.Entity.Country;
-import com.WorldPopulation2.Entity.State;
-import com.WorldPopulation2.Repository.BlockRepository;
-import com.WorldPopulation2.Repository.CountryRepository;
-import com.WorldPopulation2.Repository.StateRepository;
-import com.WorldPopulation2.Service.BlockService;
+import  com.WorldPopulation2.Service.BlockService;
 import com.WorldPopulation2.Service.BlockServiceImpl;
-import com.WorldPopulation2.Service.CountryService;
-import com.WorldPopulation2.Service.StateService;
+import com.WorldPopulation2.Service.ContactService;
 import com.WorldPopulation2.Service.UserService;
 
 
@@ -42,24 +36,13 @@ public class UserController {
 	private UserService userService;
 	
 	@Autowired
-	private CountryRepository countryRepository;
-	
-	@Autowired
-	private StateRepository stateRepository;
-	
-	@Autowired
-	private BlockRepository blockRepository;
-	
-	@Autowired
 	private BlockService blockService;
 	
 	@Autowired
 	private BlockServiceImpl blockServiceimpl;
 	
 	@Autowired
-	private CountryService countryService;
-	@Autowired
-	private StateService stateService;
+	private ContactService contactService;
 	
 	@GetMapping("/registration")
 	public String getRegistrationPage(@ModelAttribute("user") UserDto userDto) {
@@ -83,7 +66,18 @@ public class UserController {
 	public String login() {
 		return "login";
 	}
+	@GetMapping("/about")
+	public String about() {
+		return "about";
+	}
 	
+	@GetMapping("/contact")
+	public String contact(Model model) {
+	    model.addAttribute("Contact", new ContactDto());
+	    return "contact";
+	}
+
+
 	@GetMapping("/user-page")
 	public String userPage (Model model, Principal principal) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
@@ -126,6 +120,17 @@ public class UserController {
 		return blockService.getAllData(country, state, BlockNumber).stream()
 				.map(block -> new Object[] {block.getMaleEducated(),block.getFemaleEducated()})
 				.collect(Collectors.toList());
+	}
+
+	@PostMapping("/submit-message")
+	public String SubmitMessage(@ModelAttribute("Contact")ContactDto contactdto,@RequestParam("name")String name,@RequestParam("email") String email,@RequestParam("message")String message,Model model) {
+		contactdto.setName(name);
+		contactdto.setEmail(email);
+		contactdto.setMessage(message);
+		contactService.save(contactdto);
+		model.addAttribute("message","message sent succesfully");
+		
+		return "redirect:/contact";
 	}
 }
 	
