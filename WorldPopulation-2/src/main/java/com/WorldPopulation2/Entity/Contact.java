@@ -5,9 +5,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.Data;
 
 @Entity
 @Table(name="message")
+@Data
 public class Contact {
 
     @Id
@@ -16,42 +18,16 @@ public class Contact {
 	private String name;
 	private String email;
 	private String messsage;
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
-	public String getName() {
-		return name;
-	}
-	public void setName(String name) {
-		this.name = name;
-	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
-	public String getMesssage() {
-		return messsage;
-	}
-	public void setMesssage(String messsage) {
-		this.messsage = messsage;
-	}
-	public Contact(String name, String email, String messsage) {
-		super();
-		this.name = name;
-		this.email = email;
-		this.messsage = messsage;
-	}
+	
 	public Contact() {
-		super();
-		// TODO Auto-generated constructor stub
+		
 	}
-
 	
-	
+	public Contact(String name,String email,String message) {
+		this.name=name;
+		this.email=email;
+		this.messsage=message;
+		
+	}
 	
 }

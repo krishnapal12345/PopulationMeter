@@ -9,4 +9,6 @@ import com.WorldPopulation2.Entity.Contact;
 public interface ContactService {
 
 	Contact save(ContactDto contactdto);
+
+	void SubmitMessage(String email, String name, String message);
 }

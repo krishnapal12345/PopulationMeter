@@ -3,6 +3,8 @@ import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -17,10 +19,15 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.WorldPopulation2.Dto.BlockDto;
 import com.WorldPopulation2.Dto.ContactDto;
+import com.WorldPopulation2.Dto.EduGraphDto;
+import com.WorldPopulation2.Dto.GraphGenderDto;
 import com.WorldPopulation2.Dto.UserDto;
+import com.WorldPopulation2.Entity.BlockPopulationDetails;
 import  com.WorldPopulation2.Service.BlockService;
 import com.WorldPopulation2.Service.BlockServiceImpl;
 import com.WorldPopulation2.Service.ContactService;
+import com.WorldPopulation2.Service.EducationalStat;
+import com.WorldPopulation2.Service.GenderRatioStat;
 import com.WorldPopulation2.Service.UserService;
 
 
@@ -42,7 +49,15 @@ public class UserController {
 	private BlockServiceImpl blockServiceimpl;
 	
 	@Autowired
+	private EducationalStat educationalStat;
+	
+	@Autowired
+	private GenderRatioStat genderStat;
+	
+	@Autowired
 	private ContactService contactService;
+	
+	private static  Logger logger=LoggerFactory.getLogger(UserController.class);
 	
 	@GetMapping("/registration")
 	public String getRegistrationPage(@ModelAttribute("user") UserDto userDto) {
@@ -73,6 +88,7 @@ public class UserController {
 	
 	@GetMapping("/contact")
 	public String contact(Model model) {
+		logger.info("Navigating to contact page");
 	    model.addAttribute("Contact", new ContactDto());
 	    return "contact";
 	}
@@ -88,46 +104,37 @@ public class UserController {
 	public String adminPage (Model model, Principal principal) {
 		UserDetails userDetails = userDetailsService.loadUserByUsername(principal.getName());
 		model.addAttribute("user", userDetails);
-		model.addAttribute("BlockNumber",new BlockDto());
+		model.addAttribute("BlockPopulationDetails",new BlockDto());
 	    // Add this line
 		return "admin";
 	}
 	@PostMapping("/submit-data")
-	public String SubmitData(@ModelAttribute("BlockNumber")BlockDto blockDto,@RequestParam ("country") String country,@RequestParam ("state") String state,@RequestParam("BlockNumber") int BlockNumber) {  
-	    System.out.println("Country name:"+country);
-	    System.out.println("state name:"+state);
-	   
-	    blockDto.setCountrycode(country);
-	    blockDto.setStatecode(state);
-	    blockDto.setblockNumber(BlockNumber);
-	    
-	    
-	    blockService.save(blockDto);
-	   
-	   return "redirect:/admin-page";
+	public String SubmitData(@ModelAttribute("BlockPopulationDetails") BlockPopulationDetails details,@RequestParam("country")String country,@RequestParam("state")String state) {
+	    // Use the details object to get the form data
+	    blockService.SubmitData(country,state, details.getBlockNumber(),
+	                            details.getTotalPopulation(), details.getMalePopulation(), details.getFemalePopulation(),
+	                            details.getTotalEducated(), details.getFemaleEducated(), details.getMaleEducated(),
+	                            details.getAvgAge());
+	    return "redirect:/admin-page";
 	}
-	
-	@GetMapping("/get-graph")
+	@GetMapping("/get-Gender-graph")
 	@ResponseBody
-	public List<Object[]> getBlockGraph(@RequestParam("country")String country,@RequestParam("state")String state,@RequestParam("BlockNumber") int BlockNumber,Model model ){
-		return blockService.getAllData(country, state, BlockNumber).stream()
-	            .map(block -> new Object[]{block.getMalePopulation(), block.getFemalePopulation()})
-	            .collect(Collectors.toList());
+	public List<GraphGenderDto> getGenderData(@RequestParam("country")String country,@RequestParam("state")String state,@RequestParam("BlockNumber") int BlockNumber,Model model ){
+		logger.info("calling  graph for country: {}, state: {}, block number: {}", country, state, BlockNumber);
+		return genderStat.getGenderData(country, state, BlockNumber);
 	}
 	@GetMapping("/get-edu-graph")
 	@ResponseBody
-	public List<Object[]> getEduData(@RequestParam("country") String country,@RequestParam("state") String state,@RequestParam("BlockNumber")int BlockNumber){
-		return blockService.getAllData(country, state, BlockNumber).stream()
-				.map(block -> new Object[] {block.getMaleEducated(),block.getFemaleEducated()})
-				.collect(Collectors.toList());
+	public List<EduGraphDto> getEduData(@RequestParam("country") String country,@RequestParam("state") String state,@RequestParam("BlockNumber")int BlockNumber){
+		logger.info("calling get-edu-graph for country: {}, state: {}, block number: {}", country, state, BlockNumber);
+		return educationalStat.getEduData(country, state, BlockNumber);
 	}
 
 	@PostMapping("/submit-message")
 	public String SubmitMessage(@ModelAttribute("Contact")ContactDto contactdto,@RequestParam("name")String name,@RequestParam("email") String email,@RequestParam("message")String message,Model model) {
-		contactdto.setName(name);
-		contactdto.setEmail(email);
-		contactdto.setMessage(message);
-		contactService.save(contactdto);
+		logger.info("Submitting message from user: {} with email: {}", name, email);
+		contactService.SubmitMessage(email, name, message);
+		
 		model.addAttribute("message","message sent succesfully");
 		
 		return "redirect:/contact";

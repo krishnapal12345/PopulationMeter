@@ -51,7 +51,7 @@
     </div>
     <div class="container p-3">
     <h2> 2024 WORLD DATA PRESENTED HERE </h2>
-    <form th:action="@{/get-graph}"
+    <form th:action="@{/get-Gender-graph}"
          method="Get">
     <div class="mb-3">
      <label for="country" style="color:rgb(255, 255, 255)">Choose a country:</label>
@@ -114,7 +114,7 @@
 
       // Fetch and draw population chart
       function drawPopulationChart(country, state, blockNumber) {
-        fetch(`/get-graph?country=${country}&state=${state}&BlockNumber=${blockNumber}`)
+        fetch(`/get-Gender-graph?country=${country}&state=${state}&BlockNumber=${blockNumber}`)
           .then(response => response.json())
           .then(data => {
             if (data.length > 0) {
@@ -122,9 +122,12 @@
                 var dataTable = new google.visualization.DataTable();
                 dataTable.addColumn('string', 'Category');
                 dataTable.addColumn('number', 'Value');
+                
+                const maleCount = data[0].maleCount;
+                const femaleCount = data[0].femaleCount;
                 dataTable.addRows([
-                  ['Male Population', data[0][0]],
-                  ['Female Population', data[0][1]],
+                  ['Male Population', maleCount],
+                  ['Female Population', femaleCount],
                 ]);
 
                 var options = {
@@ -144,34 +147,39 @@
 
       // Fetch and draw education chart
       function drawEducationChart(country, state, blockNumber) {
-        fetch(`/get-edu-graph?country=${country}&state=${state}&BlockNumber=${blockNumber}`)
-          .then(response => response.json())
-          .then(data => {
+    fetch(`/get-edu-graph?country=${country}&state=${state}&BlockNumber=${blockNumber}`)
+        .then(response => response.json())
+        .then(data => {
             if (data.length > 0) {
-              google.charts.setOnLoadCallback(() => {
-                var dataTable = new google.visualization.DataTable();
-                dataTable.addColumn('string', 'Category');
-                dataTable.addColumn('number', 'Value');
-                dataTable.addRows([
-                  ['Male Education', data[0][0]],
-                  ['Female Education', data[0][1]],
-                ]);
+                google.charts.setOnLoadCallback(() => {
+                    var dataTable = new google.visualization.DataTable();
+                    dataTable.addColumn('string', 'Category');
+                    dataTable.addColumn('number', 'Value');
+                    
+                    // Assuming the first object in data is the one you want to display
+                    const maleValue = data[0].maleValue;
+                    const femaleValue = data[0].femaleValue;
+                    
+                    dataTable.addRows([
+                        ['Male Education', maleValue],
+                        ['Female Education', femaleValue],
+                    ]);
 
-                var options = {
-                  title: 'Male-Female Education Ratio',
-                  width: 400,
-                  height: 300
-                };
+                    var options = {
+                        title: 'Male-Female Education Ratio',
+                        width: 400,
+                        height: 300
+                    };
 
-                var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
-                chart.draw(dataTable, options);
-              });
+                    var chart = new google.visualization.PieChart(document.getElementById('chart_div2'));
+                    chart.draw(dataTable, options);
+                });
             } else {
-              alert("No data available for the selected Block.");
+                alert("No data available for the selected Block.");
             }
-          });
-      }
-    </script>
+        });
+       }
+</script>
     
       <script th:src=@{/js/country-states.js}>  </script>
     

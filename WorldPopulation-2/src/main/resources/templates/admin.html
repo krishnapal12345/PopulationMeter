@@ -44,11 +44,7 @@
      <h1>Hello Admin!!</h1>
      
       <h2>Enter World Population Data</h2>
-      <form 
-         th:action="@{/submit-data}"
-         method="post"
-         
-        >
+<form th:action="@{/submit-data}" th:object="${BlockPopulationDetails}" method="post">
       <div class="container p-3">
     <h2> 2024 WORLD DATA PRESENTED HERE </h2>
     <div class="mb-3">
@@ -72,35 +68,35 @@
    <div class="row">
       <div class="col-md-4">
         <label for="totalPopulation">Total Population:</label><br>
-        <input th:field="*{BlockNumber.TotalPopulation}"  type="number" id="totalPopulation" name="totalPopulation" required><br><br>
+        <input th:field="*{totalPopulation}"  type="number" id="totalPopulation" name="totalPopulation" required><br><br>
       </div>
       <div class="col-md-4">
         <label for="malePopulation">Male Population:</label><br>
-        <input th:field="*{BlockNumber.MalePopulation}" type="number" id="malePopulation" name="malePopulation" required><br><br>
+        <input th:field="*{malePopulation}" type="number" id="malePopulation" name="malePopulation" required><br><br>
       </div>
       <div class="col-md-4">
         <label for="femalePopulation">Female Population:</label><br>
-        <input th:field="*{BlockNumber.FemalePopulation}" type="number" id="femalePopulation" name="femalePopulation" required><br><br>
+        <input th:field="*{femalePopulation}" type="number" id="femalePopulation" name="femalePopulation" required><br><br>
       </div>
     </div>
     <div class="row mt-3">
       <div class="col-md-4">
         <label for="totalEducated">Total Educated People:</label><br>
-        <input th:field="*{BlockNumber.TotalEducated}" type="number" id="totalEducated" name="totalEducated" required><br><br>
+        <input th:field="*{totalEducated}" type="number" id="totalEducated" name="totalEducated" required><br><br>
       </div>
       <div class="col-md-4">
         <label for="femaleEducated">Female Educated:</label><br>
-        <input th:field="*{BlockNumber.FemaleEducated}" type="number" id="femaleEducated" name="femaleEducated" required><br><br>
+        <input th:field="*{femaleEducated}" type="number" id="femaleEducated" name="femaleEducated" required><br><br>
       </div>
       <div class="col-md-4">
         <label for="maleEducated">Male Educated:</label><br>
-        <input th:field="*{BlockNumber.MaleEducated}"  type="number" id="maleEducated" name="maleEducated" required><br><br>
+        <input th:field="*{maleEducated}"  type="number" id="maleEducated" name="maleEducated" required><br><br>
      </div>
     </div>
     <div class="row mt-3"> 
      <div class="col-md-3">
         <label for="avgAge">Average Age of People in Block:</label><br>
-        <input th:field="*{BlockNumber.AvgAge}" type="number" id="avgAge" name="avgAge" required><br><br>
+        <input th:field="*{AvgAge}" type="number" id="avgAge" name="avgAge" required><br><br>
      </div>
     </div>
    </div>

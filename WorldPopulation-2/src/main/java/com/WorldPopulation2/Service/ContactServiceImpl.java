@@ -20,4 +20,14 @@ public class ContactServiceImpl implements ContactService{
 		
 		return contactRepository.save(contact);
 	}
+	
+	@Override
+	public void SubmitMessage(String email,String name,String message) {
+		ContactDto contactdto=new ContactDto();
+		contactdto.setEmail(email);
+		contactdto.setName(name);
+		contactdto.setMessage(message);
+		
+		save(contactdto);
+	}
 }
