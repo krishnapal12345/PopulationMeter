@@ -1,6 +1,6 @@
 package com.WorldPopulation2.Entity;
 
-import com.WorldPopulation2.Dto.BlockDto;
+
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +34,7 @@ public class BlockPopulationDetails {
 	}
 	
 	
-	public BlockPopulationDetails(int blockNumber, String statecode, String countrycode, int totalPopulation,
+	public BlockPopulationDetails(int blockNumber,String statecode, String countrycode, int totalPopulation,
 			int malePopulation, int femalePopulation, int totalEducated, int maleEducated, int femaleEducated,
 			int avgAge) {
 		
@@ -50,22 +50,5 @@ public class BlockPopulationDetails {
 		this.avgAge = avgAge;
 	}
 	
-	public BlockDto toBlockDto() {
-		BlockDto blockDto=new BlockDto();
-		blockDto.setBlockNumber(this.blockNumber);
-		blockDto.setStatecode(this.statecode);
-		blockDto.setCountrycode(this.countrycode);
-		blockDto.setTotalPopulation(this.totalPopulation);
-		blockDto.setMalePopulation(this.malePopulation);
-		blockDto.setFemalePopulation(this.femalePopulation);
-		blockDto.setTotalEducated(this.totalEducated);
-		blockDto.setMaleEducated(this.maleEducated);
-		blockDto.setFemaleEducated(this.femaleEducated);
-		blockDto.setAvgAge(this.avgAge);
-		
-		return blockDto;
-		
-		
-	}
 	
 }

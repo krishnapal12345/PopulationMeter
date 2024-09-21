@@ -4,7 +4,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.WorldPopulation2.Dto.UserDto;
 import com.WorldPopulation2.Entity.User;
 import com.WorldPopulation2.Repository.UserRepository;
 
@@ -18,10 +17,10 @@ public class UserServiceImpl implements UserService{
 	private UserRepository userRepository;
 	
 	@Override
-	public User save(UserDto userDto) {
-		User User=new User(userDto.getUsername(),passwordEncoder.encode(userDto.getPassword()),userDto.getRole(),userDto.getFullname());
+	public User save(User user) {
+		User Users=new User(user.getUsername(),passwordEncoder.encode(user.getPassword()),user.getRole(),user.getFullname());
 		
-		return userRepository.save(User);
+		return userRepository.save(Users);
 	}
 
 }

@@ -6,7 +6,6 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.WorldPopulation2.Dto.BlockDto;
 import com.WorldPopulation2.Entity.BlockPopulationDetails;
 import com.WorldPopulation2.Repository.BlockRepository;
 
@@ -17,34 +16,26 @@ public class BlockServiceImpl implements BlockService {
 	private BlockRepository blockRepository;
 	
 	@Override
-	public  BlockPopulationDetails save(BlockDto blockDto) {
-		BlockPopulationDetails block=blockDto.toBlockPopulationDetails();
+	public  BlockPopulationDetails save(BlockPopulationDetails blockPopulationDetails) {
 		
-		 return blockRepository.save(block);
+		 return blockRepository.save(blockPopulationDetails);
 	}
 	
-	public void SubmitData(BlockPopulationDetails details) {
-		BlockDto blockDto=details.toBlockDto();
-		save(blockDto);
-	}
-    public void SubmitData(String country,String state,int blockNumber,int totalPopulation,int malePopulation,int femalePopulation,int totalEducated,int femaleEducated,int maleEducated,int avgAge) {
-    	BlockPopulationDetails details = new BlockPopulationDetails( blockNumber, state, country, 
-                totalPopulation, malePopulation, femalePopulation, totalEducated, maleEducated, femaleEducated, avgAge);
-            SubmitData(details);
-    }
 	
-	public List<BlockDto> getAllData(String countrycode,String statecode,int blockNumber){
-		return blockRepository.findByCountrycodeAndStatecodeAndBlockNumber(countrycode, statecode,blockNumber)
-				.stream()
-				.map(BlockPopulationDetails::toBlockDto)
-				.collect(Collectors.toList());
+	public void SaveData(String country, String state, int blockNumber, int totalPopulation,
+               int malePopulation, int femalePopulation, int totalEducated, 
+               int femaleEducated, int maleEducated, int avgAge) {
+               BlockPopulationDetails details = new BlockPopulationDetails(blockNumber, state, country, totalPopulation, malePopulation, femalePopulation, totalEducated, maleEducated, femaleEducated, avgAge
+                   );
+             save(details);
+               }
+	
+
+
+	public List<BlockPopulationDetails> getAllData(String countrycode,String statecode,int blockNumber){
+		return blockRepository.findByCountrycodeAndStatecodeAndBlockNumber(countrycode, statecode,blockNumber);
 	}
 
-	@Override
-	public List<BlockPopulationDetails> getBlockPopulationDetailsDetails(String countrycode, String statecode,
-			int blockNumber) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 }

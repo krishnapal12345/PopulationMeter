@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.WorldPopulation2.Dto.EduGraphDto;
+import com.WorldPopulation2.Entity.BlockPopulationDetails;
 
 @Service
 public class EducationalStat {
