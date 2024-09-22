@@ -5,13 +5,14 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.WorldPopulation2.Entity.BlockPopulationDetails;
+import com.WorldPopulation2.Entity.State;
 
 @Service
 public interface BlockService {
 
-	BlockPopulationDetails save(BlockPopulationDetails blockPopulationDetails);
+	BlockPopulationDetails saveBlockData(BlockPopulationDetails details,String countryName,String stateName);
 
-	List<BlockPopulationDetails> getAllData(String countrycode,String statecode,int blockNumber);
+	List<BlockPopulationDetails> getAllData(String countryName,String stateName,int blockNumber);
 	
-	 void SaveData(String country,String state,int blockNumber,int totalPopulation,int malePopulation,int femalePopulation,int totalEducated,int femaleEducated,int maleEducated,int avgAge);
+	
 }

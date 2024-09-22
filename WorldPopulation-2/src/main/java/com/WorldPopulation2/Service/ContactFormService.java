@@ -1,12 +1,12 @@
 package com.WorldPopulation2.Service;
 
 import org.springframework.stereotype.Service;
-import com.WorldPopulation2.Entity.Contact;
+import com.WorldPopulation2.Entity.ContactForm;
 
 @Service
-public interface ContactService {
+public interface ContactFormService {
 
-	Contact save(Contact contact);
+	ContactForm save(ContactForm contact);
 
 	void SaveMessage(String email, String name, String message);
 }

@@ -3,9 +3,9 @@ package com.WorldPopulation2.Repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import com.WorldPopulation2.Entity.Contact;
+import com.WorldPopulation2.Entity.ContactForm;
 
 @Repository
-public interface ContactRepository extends JpaRepository<Contact,Integer>{
+public interface ContactFormRepository extends JpaRepository<ContactForm,Integer>{
 
 }

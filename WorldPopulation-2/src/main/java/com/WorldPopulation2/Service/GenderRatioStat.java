@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.WorldPopulation2.Dto.GraphGenderDto;
+import com.WorldPopulation2.Entity.State;
 
 @Service
 public class GenderRatioStat {
@@ -18,13 +19,11 @@ public class GenderRatioStat {
 	@Autowired
 	private BlockService blockService;
 	
-	public List<GraphGenderDto> getGenderData(String country,String state,int blockNumber){
-		logger.info("Fetching GenderRatio graph for country: {}, state: {}, block number: {}", country, state, blockNumber);
-		return blockService.getAllData(country, state, blockNumber)
+	public List<GraphGenderDto> getGenderData(String countryName,String stateName,int blockNumber){
+		return blockService.getAllData(countryName, stateName, blockNumber)
 				.stream()
-				.map(block -> new GraphGenderDto(block.getMalePopulation(),block.getFemalePopulation()))
+				.map(block ->new GraphGenderDto(block.getMalePopulation(),block.getFemalePopulation()))
 				.collect(Collectors.toList());
 	}
-	
 	
 }

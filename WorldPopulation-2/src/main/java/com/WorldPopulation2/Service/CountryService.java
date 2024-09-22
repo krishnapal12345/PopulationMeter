@@ -1,5 +1,7 @@
 package com.WorldPopulation2.Service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,11 +14,12 @@ public class CountryService {
 	@Autowired
 	private CountryRepository countryRepository;
 	
-	public String getcodeByName(String name) {
-		Country country=countryRepository.findByName(name);
-		if(country != null) {
-			return country.getCode();
-		}
-		return null;
-	}
+	public Country saveCountryData(String countryName) {
+        List<Country> countries = countryRepository.findByCountryName(countryName);
+        if (countries.isEmpty()) {
+            return countryRepository.save(new Country(countryName));
+        } else {
+            return countries.get(0);
+        }
+    }
 }

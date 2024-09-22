@@ -10,6 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.WorldPopulation2.Dto.EduGraphDto;
 import com.WorldPopulation2.Entity.BlockPopulationDetails;
+import com.WorldPopulation2.Entity.State;
+import com.WorldPopulation2.Repository.BlockRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class EducationalStat {
@@ -19,10 +23,20 @@ public class EducationalStat {
 	@Autowired
 	private BlockService blockService;
 	
-	public List<EduGraphDto> getEduData(String country,String state,int blockNumber){
-		logger.info("Fetching education graph for country: {}, state: {}, block number: {}", country, state, blockNumber);
-		return blockService.getAllData(country, state, blockNumber).stream()
+	@Autowired
+	private BlockRepository blockRepository;
+	
+	public List<BlockPopulationDetails> getBlockPopulationDetails(String countryName, String stateName, int blockNumber) {
+        return blockRepository.findByCountryStateAndBlockNumber(countryName, stateName, blockNumber);
+    }
+	
+	public List<EduGraphDto> getEduData(String countryName,String stateName,int blockNumber){
+		logger.info("Fetching education graph for country: {}, state: {}, block number: {}", countryName, stateName, blockNumber);
+		return blockService.getAllData(countryName,stateName, blockNumber)
+				.stream()
 	            .map(block -> new EduGraphDto(block.getMaleEducated(), block.getFemaleEducated()))
 	            .collect(Collectors.toList());
 	}
+	
+	
 }

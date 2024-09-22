@@ -50,12 +50,13 @@
     <div class="mb-3">
      <label for="country" style="color:rgb(255, 255, 255)">Choose a country:</label>
           <select id="country" name="country">
+          <input type="hidden" id="hiddenCountryName" name="countryName" />
           <option value="">Select Country</option>
           </select>
     </div>      
     <div class="mb-3">
      <label for="state" style="color:rgb(255, 255, 255)">Choose a state:</label>
-        <select id="state" name="state">
+        <select id="state" name="statecode">
           <option value="">Select State</option>
         </select>
     </div>
@@ -113,38 +114,45 @@
     
     <script>
       // Function to populate the country dropdown
-    function populateCountryDropdown() {
-      const countryDropdown = document.getElementById("country");
-      for (const countryCode in country_and_states.country) {
+  function populateCountryDropdown() {
+    const countryDropdown = document.getElementById("country");
+    const hiddenCountryName = document.getElementById("hiddenCountryName");
+    
+    for (const countryCode in country_and_states.country) {
         const option = document.createElement("option");
-        option.value = countryCode;
-        option.text = country_and_states.country[countryCode];
+        option.value = countryCode; // Keep country code as the value
+        option.text = country_and_states.country[countryCode]; // Display country name
         countryDropdown.appendChild(option);
-       }
     }
+    
+    // Update the hidden input when the dropdown changes
+    countryDropdown.addEventListener("change", function() {
+        hiddenCountryName.value = this.options[this.selectedIndex].text; 
+    });
+}
 
-    // Function to populate the state dropdown based on the selected country
-   function populateStateDropdown(countryCode) {
-     const stateDropdown = document.getElementById("state");
-     stateDropdown.innerHTML = "<option value=''>Select State</option>";
-     if (countryCode && country_and_states.states[countryCode]) {
+// Function to populate the state dropdown based on the selected country
+function populateStateDropdown(countryCode) {
+    const stateDropdown = document.getElementById("state");
+    stateDropdown.innerHTML = "<option value=''>Select State</option>";
+    if (countryCode && country_and_states.states[countryCode]) {
         country_and_states.states[countryCode].forEach((state) => {
             const option = document.createElement("option");
-            option.value = state.code;
-            option.text = state.name;
+            option.value = state.name; // Use state name as the value
+            option.text = state.name; // Display state name
             stateDropdown.appendChild(option);
-          });
-      }
-   }
+        });
+    }
+}
 
-    // Event listener for country dropdown change
-    document.getElementById("country").addEventListener("change", function() {
-      const selectedCountry = this.value;
-      populateStateDropdown(selectedCountry);
-     });
+// Event listener for country dropdown change
+document.getElementById("country").addEventListener("change", function() {
+    const selectedCountry = this.value;
+    populateStateDropdown(selectedCountry);
+});
 
-     // Populate the country dropdown initially
-     populateCountryDropdown();
+// Populate the country dropdown initially
+populateCountryDropdown();
 
     </script>
     <script >

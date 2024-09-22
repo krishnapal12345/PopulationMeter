@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Table(name="messages")
 @Data
 @NoArgsConstructor
-public class Contact {
+public class ContactForm {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
@@ -22,7 +22,7 @@ public class Contact {
 	private String email;
 	private String message;
 	
-	public Contact(String name,String email,String message) {
+	public ContactForm(String name,String email,String message) {
 		this.name=name;
 		this.email=email;
 		this.message=message;

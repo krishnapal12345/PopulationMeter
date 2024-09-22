@@ -7,7 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.WorldPopulation2.Entity.BlockPopulationDetails;
+import com.WorldPopulation2.Entity.State;
 import com.WorldPopulation2.Repository.BlockRepository;
+import com.WorldPopulation2.Repository.StateRepository;
+
+import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class BlockServiceImpl implements BlockService {
@@ -15,27 +19,29 @@ public class BlockServiceImpl implements BlockService {
 	@Autowired 
 	private BlockRepository blockRepository;
 	
+	@Autowired
+	private StateRepository stateRepository;
+	
 	@Override
-	public  BlockPopulationDetails save(BlockPopulationDetails blockPopulationDetails) {
-		
-		 return blockRepository.save(blockPopulationDetails);
-	}
+    public BlockPopulationDetails saveBlockData(BlockPopulationDetails details, String countryName, String stateName) {
+        List<State> states = stateRepository.findByStateNameAndCountry_CountryName(stateName, countryName);
+              if(states.isEmpty()) {  
+        		throw new EntityNotFoundException("State not found: " + stateName + " in country: " + countryName);
+              }
+        State state=states.get(0);
+        
+        details.setState(state);
+        return blockRepository.save(details);
+    }
 	
-	
-	public void SaveData(String country, String state, int blockNumber, int totalPopulation,
-               int malePopulation, int femalePopulation, int totalEducated, 
-               int femaleEducated, int maleEducated, int avgAge) {
-               BlockPopulationDetails details = new BlockPopulationDetails(blockNumber, state, country, totalPopulation, malePopulation, femalePopulation, totalEducated, maleEducated, femaleEducated, avgAge
-                   );
-             save(details);
-               }
-	
-
-
-	public List<BlockPopulationDetails> getAllData(String countrycode,String statecode,int blockNumber){
-		return blockRepository.findByCountrycodeAndStatecodeAndBlockNumber(countrycode, statecode,blockNumber);
-	}
-
-	
-
+	public List<BlockPopulationDetails> getAllData(String countryName,String stateName,int blockNumber){
+		return blockRepository.findByCountryStateAndBlockNumber(countryName, stateName, blockNumber);
+    }
 }
+
+	
+
+
+	
+
+

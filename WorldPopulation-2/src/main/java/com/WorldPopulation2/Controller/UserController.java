@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -21,9 +22,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.WorldPopulation2.Dto.EduGraphDto;
 import com.WorldPopulation2.Dto.GraphGenderDto;
 import com.WorldPopulation2.Entity.BlockPopulationDetails;
+import com.WorldPopulation2.Entity.State;
 import  com.WorldPopulation2.Service.BlockService;
 import com.WorldPopulation2.Service.BlockServiceImpl;
-import com.WorldPopulation2.Service.ContactService;
+import com.WorldPopulation2.Service.ContactFormService;
 import com.WorldPopulation2.Service.EducationalStat;
 import com.WorldPopulation2.Service.GenderRatioStat;
 import com.WorldPopulation2.Service.UserService;
@@ -53,17 +55,25 @@ public class UserController {
 		return "user";
 	}
 	
-	@GetMapping("/get-Gender-graph")
-	@ResponseBody
-	public List<GraphGenderDto> getGenderData(@RequestParam("country")String country,@RequestParam("state")String state,@RequestParam("BlockNumber") int BlockNumber,Model model ){
-		logger.info("calling  graph for country: {}, state: {}, block number: {}", country, state, BlockNumber);
-		return genderStat.getGenderData(country, state, BlockNumber);
-	}
+	
 	@GetMapping("/get-edu-graph")
 	@ResponseBody
-	public List<EduGraphDto> getEduData(@RequestParam("country") String country,@RequestParam("state") String state,@RequestParam("BlockNumber")int BlockNumber){
-		logger.info("calling get-edu-graph for country: {}, state: {}, block number: {}", country, state, BlockNumber);
-		return educationalStat.getEduData(country, state, BlockNumber);
+	public List<EduGraphDto> getEduData(@RequestParam("countryName") String countryName,@RequestParam("stateName") String stateName,@RequestParam("blockNumber")int blockNumber){
+		System.out.println("country:"+countryName);
+		logger.info("calling get-edu-graph for country: {}, state: {}, block number: {}", countryName, stateName, blockNumber);
+		return educationalStat.getEduData(countryName, stateName, blockNumber);
+	}
+	@GetMapping("/get-Data")
+	@ResponseBody
+	public ResponseEntity<List<BlockPopulationDetails>> getGraphData(@RequestParam("countryName") String countryName,@RequestParam("stateName") String stateName,@RequestParam("blockNumber")int blockNumber) {
+		List<BlockPopulationDetails> blockDetails=educationalStat.getBlockPopulationDetails(countryName, stateName, blockNumber);
+		 return ResponseEntity.ok(blockDetails);	
+	}
+	@GetMapping("/get-Gender-graph")
+	@ResponseBody
+    public List<GraphGenderDto> getGenderData(@RequestParam("countryName") String countryName,@RequestParam("stateName") String stateName,@RequestParam("blockNumber")int blockNumber){
+		logger.info("calling get-Gender-graph for country: {}, state: {}, block number: {}", countryName, stateName, blockNumber);
+		return genderStat.getGenderData(countryName, stateName, blockNumber);
 	}
 }
 	
