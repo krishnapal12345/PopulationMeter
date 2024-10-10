@@ -31,6 +31,7 @@ public class StateService {
         
         List<State> states = stateRepository.findByStateNameAndCountry(stateName, country);
         if (states.isEmpty()) {
+        	System.out.println("Saving new state: " + stateName);
             return stateRepository.save(new State(stateName, country));
         } else {
             

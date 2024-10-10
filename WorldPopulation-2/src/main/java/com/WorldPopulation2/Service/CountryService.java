@@ -17,7 +17,9 @@ public class CountryService {
 	public Country saveCountryData(String countryName) {
         List<Country> countries = countryRepository.findByCountryName(countryName);
         if (countries.isEmpty()) {
+        	System.out.println("Saving new country: " + countryName);
             return countryRepository.save(new Country(countryName));
+            
         } else {
             return countries.get(0);
         }

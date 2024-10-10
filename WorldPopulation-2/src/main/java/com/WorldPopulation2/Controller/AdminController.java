@@ -4,6 +4,8 @@ import java.security.Principal;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
@@ -11,7 +13,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.WorldPopulation2.Entity.BlockPopulationDetails;
 import com.WorldPopulation2.Entity.Country;
 import com.WorldPopulation2.Entity.State;
@@ -23,7 +29,8 @@ import com.WorldPopulation2.Service.StateService;
 
 import jakarta.persistence.EntityNotFoundException;
 
-@Controller
+@RestController
+@RequestMapping("/api")
 public class AdminController {
 
     @Autowired
@@ -53,18 +60,20 @@ public class AdminController {
     }
 
     @PostMapping("/submit-data")
-    public String saveBlockData(@ModelAttribute("BlockPopulationDetails") BlockPopulationDetails details,
-                                 @RequestParam("countryName") String countryName,
-                                 @RequestParam("statecode") String stateName
-                                 ) {
-        
+    public ResponseEntity<String> SaveData(@RequestBody BlockPopulationDetails blockPopulationDetails,@RequestParam("countryName")String countryName,@RequestParam("stateName")String stateName){
     	try {
-    	  countryService.saveCountryData(countryName);
-    	  stateService.saveStateData(stateName, countryName);
-          blockService.saveBlockData(details, countryName, stateName);
-          return "redirect:/admin-page";
-    }catch(EntityNotFoundException e) {
-    	return "admin";
-    }
+    	
+  
+    		System.out.println("country-"+ countryName);
+    		System.out.println("state-"+stateName);
+    		countryService.saveCountryData(countryName);
+    		stateService.saveStateData(stateName, countryName);
+    		
+    		blockService.saveBlockData(blockPopulationDetails, countryName, stateName);
+    		
+    		return ResponseEntity.ok("Data submitted succesfully");
+    	}catch(EntityNotFoundException e) {
+    		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Data submission failed: " + e.getMessage());
+    	}
     }
 }

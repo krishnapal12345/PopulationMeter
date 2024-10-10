@@ -14,10 +14,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import org.springframework.web.bind.annotation.RestController;
 
 import com.WorldPopulation2.Dto.EduGraphDto;
 import com.WorldPopulation2.Dto.GraphGenderDto;
@@ -33,7 +33,8 @@ import com.WorldPopulation2.Service.UserService;
 
 
 
-@Controller
+@RestController
+@RequestMapping("/api")
 public class UserController {
 
 	@Autowired

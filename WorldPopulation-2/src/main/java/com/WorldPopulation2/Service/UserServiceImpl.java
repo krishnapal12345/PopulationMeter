@@ -8,19 +8,32 @@ import com.WorldPopulation2.Entity.User;
 import com.WorldPopulation2.Repository.UserRepository;
 
 @Service
-public class UserServiceImpl implements UserService{
+public class UserServiceImpl implements UserService {
 
-	@Autowired
-	private PasswordEncoder passwordEncoder;
-	
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Override
-	public User save(User user) {
-		User Users=new User(user.getUsername(),passwordEncoder.encode(user.getPassword()),user.getRole(),user.getFullname());
-		
-		return userRepository.save(Users);
-	}
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
+    @Autowired
+    private UserRepository userRepository;
+
+    @Override
+    public User save(User user) {
+        // Ensure the role has "ROLE_" prefix if it's missing
+        String role = user.getRole();
+        if (!role.startsWith("ROLE_")) {
+            role = "ROLE_" + role;
+        }
+
+        User newUser = new User(user.getUsername(),
+                passwordEncoder.encode(user.getPassword()),
+                role,
+                user.getFullname());
+
+        return userRepository.save(newUser);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
 }
